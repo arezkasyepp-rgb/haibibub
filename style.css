@@ -1,0 +1,192 @@
+@import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Biar gak bisa discroll */
+    font-family: 'Varela Round', sans-serif;
+    background-color: black;
+}
+
+/* === TAHAP 1: LAYAR MAAF === */
+#overlay-maaf {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: black;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align_items: center;
+    z-index: 9999; /* Paling depan */
+    cursor: pointer;
+    text-align: center;
+}
+.content-box { max-width: 500px; padding: 20px; }
+.content-box h1 { color: #ff9999; margin-bottom: 10px; }
+.content-box p { font-size: 18px; line-height: 1.5; color: #ddd; }
+.blink { animation: blinker 1.5s linear infinite; color: yellow; }
+@keyframes blinker { 50% { opacity: 0; } }
+
+
+/* === TAHAP 2: POPUP PESAN LUCU === */
+#overlay-pesan {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8); /* Gelap transparan */
+    display: none; /* Disembunyikan dulu */
+    justify-content: center;
+    align_items: center;
+    z-index: 9998; /* Di belakang layar maaf */
+}
+
+.popup-lucu {
+    background: white;
+    padding: 30px;
+    width: 80%;
+    max-width: 400px;
+    border-radius: 20px;
+    text-align: center;
+    border: 4px solid #ffcccc;
+    box-shadow: 0 0 20px rgba(255, 105, 180, 0.5);
+    animation: muncul 0.5s ease;
+}
+
+.popup-lucu p { font-size: 16px; color: #333; line-height: 1.6; }
+
+.btn-lanjut {
+    margin-top: 15px;
+    padding: 10px 25px;
+    background: #ff6b81;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+}
+.btn-lanjut:hover { transform: scale(1.1); background: #ff4757; }
+
+@keyframes muncul { from {transform: scale(0);} to {transform: scale(1);} }
+
+
+/* === TAHAP 3: DESKTOP UTAMA === */
+.desktop {
+    position: relative;
+    width: 100vw; height: 100vh;
+    background-size: cover;
+    background-position: center;
+    opacity: 0; /* Awalnya hidden */
+    transition: opacity 1.5s ease;
+}
+
+/* Layer Biru Tosca Transparan */
+.desktop::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(69, 166, 179, 0.6);
+    z-index: 0;
+}
+
+/* Tombol Home Atas */
+.header-pill {
+    position: absolute; top: 30px; left: 50%;
+    transform: translateX(-50%);
+    background: #e6dac8; padding: 8px 35px;
+    border-radius: 50px; z-index: 10;
+    color: #7a6b5d; font-weight: bold;
+}
+
+/* === ITEM & POLAROID === */
+.item {
+    position: absolute; z-index: 5;
+    text-align: center; text-decoration: none;
+    color: white; cursor: pointer;
+    animation: float 3s ease-in-out infinite;
+}
+.item:hover { z-index: 50; transform: scale(1.15) !important; transition: 0.3s; }
+
+/* Style Foto Polaroid */
+.polaroid { width: 100px; }
+.landscape { width: 140px; } /* Khusus yang lebar */
+
+.white-box {
+    background: white; padding: 4px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+.white-box img { width: 100%; height: 110px; object-fit: cover; display: block; }
+.landscape .white-box img { height: 90px; }
+
+.polaroid p {
+    font-size: 12px; font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+    margin-top: 5px;
+}
+
+/* Style Icon Menu */
+.icon-custom img {
+    width: 65px; height: auto;
+    filter: drop-shadow(0 4px 4px rgba(0,0,0,0.3));
+    margin-bottom: 2px;
+}
+.icon-custom span {
+    display: block; font-weight: bold;
+    text-shadow: 1px 1px 2px black; font-size: 13px;
+}
+.glass-box {
+    background: #c0c0c0; border: 2px solid #333;
+    width: 45px; height: 45px;
+    display: flex; justify-content: center; align-items: center;
+    margin: 0 auto 5px auto;
+}
+.glass-box img { width: 25px; height: 25px; margin: 0; filter: none; }
+
+/* Animasi Floating */
+@keyframes float { 0%, 100% {transform: translateY(0);} 50% {transform: translateY(-8px);} }
+
+/* Hujan Love */
+.heart {
+    position: fixed; top: -10px; color: #ff4d4d;
+    font-size: 20px; animation: fall linear forwards;
+    z-index: 100;
+}
+@keyframes fall { to { transform: translateY(110vh); } }
+/* --- TAMPILAN HALAMAN BELUM JADI --- */
+
+/* Tombol Kembali di Pojok Kiri Atas */
+.btn-back {
+    position: fixed;
+    top: 20px; left: 20px;
+    background: white;
+    padding: 10px 20px;
+    border-radius: 30px;
+    text-decoration: none;
+    color: #ff4d4d;
+    font-weight: bold;
+    border: 2px solid #ff4d4d;
+    font-size: 14px;
+    z-index: 100;
+}
+.btn-back:hover {
+    background: #ff4d4d;
+    color: white;
+}
+
+/* Kotak Pesan di Tengah Layar */
+.container-pesan {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffe6e6; /* Latar Pink Muda */
+    text-align: center;
+    color: #555;
+}
+
+.container-pesan h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}

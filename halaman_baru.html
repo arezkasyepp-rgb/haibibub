@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Untuk Kamu ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        body {
+            margin: 0; padding: 0;
+            background-color: #ffe6e6; /* Latar Pink Lembut */
+            font-family: 'Varela Round', sans-serif;
+            overflow: hidden; /* Supaya tidak bisa discroll */
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh;
+        }
+
+        /* --- BAGIAN 1: INTRO (FOTO MUTER) --- */
+        #intro-vn {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); /* Latar Hitam Transparan */
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            z-index: 999; color: white;
+            transition: opacity 1s ease;
+        }
+
+        /* Container Foto Muter */
+        .vinyl-container {
+            position: relative;
+            width: 250px; height: 250px;
+            margin-bottom: 30px;
+        }
+
+        /* Foto Kamu yang Muter */
+        .vinyl {
+            width: 100%; height: 100%;
+            border-radius: 50%; /* Bikin jadi bulat */
+            
+            /* --- DISINI FOTO KAMU DIPANGGIL --- */
+            background: url('foto_piringan.jpg') center/cover;
+            
+            border: 5px solid white; /* Bingkai putih */
+            box-shadow: 0 0 30px rgba(255, 105, 180, 0.5); /* Efek cahaya pink */
+            
+            /* Animasi putar (default pause/berhenti) */
+            animation: putar 4s linear infinite;
+            animation-play-state: paused; 
+        }
+
+        .btn-play-vn {
+            background: #ff4757; color: white;
+            border: none; padding: 12px 30px;
+            border-radius: 50px; font-size: 18px; cursor: pointer;
+            margin-top: 20px; font-weight: bold;
+            box-shadow: 0 0 15px rgba(255, 71, 87, 0.6);
+            transition: transform 0.2s;
+        }
+        .btn-play-vn:hover { transform: scale(1.1); }
+        
+        @keyframes putar { 100% { transform: rotate(360deg); } }
+
+
+        /* --- BAGIAN 2: KOTAK PERTANYAAN --- */
+        #konten-utama {
+            display: none; /* Disembunyikan dulu */
+            text-align: center;
+            width: 90%; max-width: 400px;
+            animation: muncul 1s ease;
+        }
+
+        .foto-kita {
+            width: 150px; height: 150px;
+            border-radius: 50%; object-fit: cover;
+            border: 5px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            animation: denyut 1.5s infinite alternate;
+        }
+
+        h1 { color: #ff4757; margin-bottom: 10px; }
+        p { color: #555; font-size: 16px; line-height: 1.5; margin-bottom: 30px; }
+
+        .btn-group { position: relative; height: 60px; display: flex; justify-content: center; gap: 20px; }
+        
+        .btn {
+            padding: 10px 25px; border-radius: 30px; border: none;
+            font-weight: bold; cursor: pointer; font-size: 16px;
+            transition: 0.3s;
+        }
+
+        .btn-mau {
+            background: #ff4757; color: white;
+            box-shadow: 0 4px 10px rgba(255, 71, 87, 0.4);
+            z-index: 10;
+        }
+        .btn-mau:hover { transform: scale(1.1); }
+
+        .btn-gamau {
+            background: white; color: #555;
+            border: 2px solid #ddd;
+        }
+
+        @keyframes denyut { from {transform: scale(1);} to {transform: scale(1.05);} }
+        @keyframes muncul { from {opacity: 0; transform: translateY(20px);} to {opacity: 1; transform: translateY(0);} }
+    </style>
+</head>
+<body>
+
+    <audio id="audio-vn">
+        <source src="vn.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="audio-bgm" loop>
+        <source src="musik_romantis.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="intro-vn">
+        <div class="vinyl-container">
+            <div class="vinyl" id="piringan"></div>
+        </div>
+        
+        <h3 style="margin-bottom: 5px;">Ada pesan buat kamu... 💌</h3>
+        <p style="font-size: 12px; color: #ccc;">(Dengerin sampai habis ya)</p>
+        
+        <button class="btn-play-vn" onclick="putarVN()">
+            <i class="fas fa-play"></i> Putar Pesan
+        </button>
+    </div>
+
+    <div id="konten-utama">
+        <img src="foto9.jpg" alt="Kita" class="foto-kita">
+        
+        <h1>Bibub Sayang... ❤️</h1>
+        <p>
+            aku seneng banget kenal sama bibub
+            bibub mau ga jadi pacar aku?
+        </p>
+
+        <div class="btn-group">
+            <button class="btn btn-mau" onclick="terima()">MAU DONG! 😍</button>
+            
+            <button class="btn btn-gamau" id="btn-tolak" onmouseover="pindahTombol()" onclick="pindahTombol()">Gak dulu</button>
+        </div>
+    </div>
+
+    <script>
+        var vn = document.getElementById("audio-vn");
+        var bgm = document.getElementById("audio-bgm");
+        var piringan = document.getElementById("piringan");
+        var btnTolak = document.getElementById("btn-tolak");
+
+        // 1. Putar VN & Animasi
+        function putarVN() {
+            document.querySelector(".btn-play-vn").style.display = "none"; // Hilangkan tombol play
+            vn.play();
+            piringan.style.animationPlayState = "running"; // Foto mulai muter
+        }
+
+        // 2. Kalau VN Selesai -> Pindah Halaman
+        vn.onended = function() {
+            masukKePertanyaan();
+        };
+
+        // 3. Transisi Halaman
+        function masukKePertanyaan() {
+            // Intro hilang
+            document.getElementById("intro-vn").style.opacity = "0";
+            setTimeout(() => {
+                document.getElementById("intro-vn").style.display = "none";
+                
+                // Halaman pertanyaan muncul
+                document.getElementById("konten-utama").style.display = "block";
+                
+                // Lagu romantis main
+                bgm.volume = 0.5; 
+                bgm.play();
+            }, 1000);
+        }
+
+        // 4. Tombol 'Gak Dulu' Kabur
+        function pindahTombol() {
+            var x = Math.random() * (window.innerWidth - 120);
+            var y = Math.random() * (window.innerHeight - 120);
+            
+            btnTolak.style.position = "fixed"; // Ubah jadi fixed biar bebas gerak
+            btnTolak.style.left = x + "px";
+            btnTolak.style.top = y + "px";
+        }
+
+        // 5. Tombol 'Mau' -> Link WA
+        function terima() {
+            alert("YEEEYYY!!! Makasih sayanggg! ❤️❤️❤️");
+            window.location.href = "https://wa.link/53zwv3"; 
+        }
+    </script>
+</body>
+</html>
